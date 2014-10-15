@@ -1,4 +1,4 @@
 hfs
 ===
 
-Scripts for running hysplit/flexpart in more automatic way
+Scripts for running hysplit/flexpart in more automatic way.
