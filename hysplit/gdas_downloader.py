@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 #
 # Download GDAS data from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1/ for
-# specified period of time. Period is set in the format "%month %year" at the
-# beginning of the script execution. Data is downloaded to the current working
-# directory.
+# specified period of time. Period is set in the format "MM YY" at the
+# beginning of the script execution. Data is downloaded to entered directory.
 #
-# Dušan Lago <dusan.lago at gmail.com>
+# Dusan Lago <dusan.lago at gmail.com>
 # Tested with Python 2.7.6
-# 2014-10-19
+# 2014-11-15
 
 """Modules"""
 from ftplib import FTP
@@ -32,9 +31,21 @@ def cls():
 
 cls()
 
-# User input
-d1 = tuple(map(int, raw_input("Starting date (%%month %%year): ").split(' ')))
-d2 = tuple(map(int, raw_input("End date (%%month %%year): ").split(' ')))
+# User input and displayed script description
+description = """gdas_downloader.py
+
+This scripts downloads gdas1 data from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1/. \
+User is required to set the desired period and directory used to store downloaded files.
+"""
+
+print(description)
+d1 = tuple(map(int, raw_input("Starting date (MM YEAR) : ").split(' ')))
+d2 = tuple(map(int, raw_input("End date (MM YEAR) : ").split(' ')))
+outdir = raw_input("Output directory (e.g. C:\\meteo_dir\\) : ")
+
+# Create output dir if not exists
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
 
 # Set date objects
 start_date = date(d1[1], d1[0], 1)
@@ -64,7 +75,7 @@ ftp.cwd(working_dir)
 
 for i in months_all:
     for j in range(1, 6):
-        filename = "gdas1." + i + ".w" + str(j)
+        filename = outdir + "gdas1." + i + ".w" + str(j)
         print "\t * " + filename
         output_file = open(filename, 'wb')
 
