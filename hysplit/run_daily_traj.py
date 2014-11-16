@@ -11,7 +11,7 @@
 # Values are in the folowing order:
 # OUTPUT FOLDER, LATITUDE, LONGTITUDE, HEIGHT, YEAR, MONTH, DAY, BACKWARD TIME IN HOURS
 #
-# Dušan Lago <dusan.lago at gmail.com>
+# Dusan Lago <dusan.lago at gmail.com>
 # Tested with Python 2.7.6
 # 2014-10-19
 
@@ -19,35 +19,24 @@
 import csv
 import os
 import subprocess
+from subprocess import Popen, PIPE
 from datetime import date, timedelta
 from timeit import time
-from time import sleep
-import pdb
+from sets import Set
 import calendar
+import math
+
 
 """Constants"""
-HYSPLIT_BIN = 'C:\\hysplit4\\exec\\hyts_std.exe'
 
-months = [
-    'jan', 'feb', 'mar', 'apr',
-    'may', 'jun', 'jul', 'aug',
-    'sep', 'oct', 'nov', 'dec'
-]
-# Default folder with meteo data. 
-meteoDir = 'E:/meteo/'
-
-RUNS.CSV = 'runs.csv'
-
-# Start of calculations
-print "Press Enter to start calculations"
-raw_input()
-
-# Execution start time stamp.
+hysplit_bin = 'C:\\hysplit4\\exec\\hyts_std.exe'
+meteo_dir = 'E:\\meteo\\'
+output_dir = 'E:\\meteo\\'
+csv_source = 'sample_run.csv'
+# Execution start time stamp
 startTime = time.time()
-
-# Source file for station coordinates and time ranges stored in CSV reader.
-source = open(RUNS.CSV, 'r')
-reader = csv.reader(source)
+# Load runs from csv file
+csv_input = csv.reader(open(csv_source, 'r'))
 
 # ASCDATA.CFG
 ASCDATA = """-90.0   -180.0  lat/lon of lower left corner
@@ -59,118 +48,124 @@ ASCDATA = """-90.0   -180.0  lat/lon of lower left corner
 """
 
 # SETUP.CFG
-SETUP = """&SETUP\ntratio = 0.75,\nmgmin = 15,\nkhmax = 9999,\nkmixd = 0,\nkmsl = 0,
-nstr = 0,\nmhrs = 9999,\nnver = 0,\ntout = 60,\ntm_tpot = 0,\ntm_tamb = 0,
-tm_rain = 1,\ntm_mixd = 1,\ntm_relh = 0,\ntm_sphu = 0,\ntm_mixr = 0,
-tm_dswf = 0,\ntm_terr = 0,\ndxf = 1.0,\ndyf = 1.0,\ndzf = 0.01,\n/
+SETUP = """&SETUP\ntratio = 0.75,\nmgmin = 15,\nkhmax = 9999,\nkmixd = 0,
+kmsl = 0,\nnstr = 0,\nmhrs = 9999,\nnver = 0,\ntout = 60,\ntm_tpot = 0,
+tm_tamb = 0,\ntm_rain = 1,\ntm_mixd = 1,\ntm_relh = 0,\ntm_sphu = 0,
+ntm_mixr = 0,\ntm_dswf = 0,\ntm_terr = 0,\ndxf = 1.0,\ndyf = 1.0,
+dzf = 0.01,\n/
 """
 
-# Create ASCDATA.CFG and SETUP.CFG
-def createSetupAscdata():
+
+"""Additional functions"""
+
+# Calculate the week number of month
+# Taken from http://stackoverflow.com/a/7029955
+def week_of_month(tgtdate):
+
+    days_this_month = calendar.mdays[tgtdate.month]
+    for i in range(1, days_this_month):
+        d = date(tgtdate.year, tgtdate.month, i)
+        if d.day - d.weekday() > 0:
+            startdate = d
+            break
+    # now we can use the modulo 7 approach
+    return (tgtdate - startdate).days //7 + 1
+
+# Create ASCDATA.CFG
+def createASCDATA():
     ascdataFile = open('ASCDATA.CFG', 'w')
     ascdataFile.write(ASCDATA)
     ascdataFile.close()
 
+# Create SETUP.CFG
+def createSETUP():
     setupFile = open('SETUP.CFG', 'w')
     setupFile.write(SETUP)
     setupFile.close()
 
-# Return previous month from months list.
-def monthBack(i):
-    if i == 1:
-        return months[11]
-    else:
-        return months[i-2]
 
-# Create CONTROL file. Input is time and 
-def createControl(currentTime, currentDate):
-    control = open('CONTROL', 'w')
-
-    if (calendar.monthrange(currentDate.year, 2)[1] == 28 and currentDate.month == 2):
-        control.write(currentDate.strftime('%y' + ' ' + '%m' + ' ' + '%d') \
-            + ' ' + currentTime + '\n1\n%s %s %s\n-240\n0\n10000.0\n7\n' \
-            % (line[1], line[2], line[3]))
-        for week in range(1,5):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 1], currentDate.strftime('%y'), week))
-        for week in range(3,6):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 2], currentDate.strftime('%y'), week))
-    elif (calendar.monthrange(currentDate.year, 2)[1] == 28 and currentDate.month == 3):
-        control.write(currentDate.strftime('%y' + ' ' + '%m' + ' ' + '%d') \
-            + ' ' + currentTime + '\n1\n%s %s %s\n-240\n0\n10000.0\n7\n' \
-            % (line[1], line[2], line[3]))
-        for week in range(1,6):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 1], currentDate.strftime('%y'), week))
-        for week in range(3,5):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 2], currentDate.strftime('%y'), week))
-    elif currentDate.month == 1:
-        control.write(currentDate.strftime('%y' + ' ' + '%m' + ' ' + '%d') \
-            + ' ' + currentTime + '\n1\n%s %s %s\n-240\n0\n10000.0\n8\n' \
-            % (line[1], line[2], line[3]))
-        for week in range(1,6):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 1], currentDate.strftime('%y'), week))
-        # one year back
-        currentYear = int(currentDate.strftime('%y')) - 1
-        for week in range(3,6):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 2], currentYear, week))
-    else:
-        control.write(currentDate.strftime('%y' + ' ' + '%m' + ' ' + '%d') \
-            + ' ' + currentTime + '\n1\n%s %s %s\n-240\n0\n10000.0\n8\n' \
-            % (line[1], line[2], line[3]))
-        for week in range(1,6):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 1], currentDate.strftime('%y'), week))
-        for week in range(3,6):
-            control.write('%s\ngdas1.%s%s.w%d\n' % \
-                (meteoDir, months[currentDate.month - 2], currentDate.strftime('%y'), week))
-
-    control.write(os.getcwd().replace('\\','/') + '/\n' + currentDate.strftime('%y%m%d') + \
-        currentTime)
-    control.close()
-    
-# Remove created configuration files.
-def removeSetupAscdata():
-        if os.path.exists("ASCDATA.CFG"):
-            os.remove("ASCDATA.CFG")
-        if os.path.exists("SETUP.CFG"):
-            os.remove("SETUP.CFG")
-
+"""Main"""
 # Main loop. Cycling throught the lines in csv file and for each
-# day within period runs model in specified times.
-for line in reader:
+# day within period runs model in specified hours.
+for line in csv_input:
 
-    workingPath = "%s/%s" & (line[0], line[1])
-
-    print line[1]
-
-    # Make dir for current period.
-    if not os.path.exists(workingPath):
-        os.mkdir(workingPath)
-
-    os.chdir(workingPath)
-
-    createSetupAscdata()
-
-    startDate = date(int(line[4]), int(line[5]), int(line[6]))
-    endDate = date(int(line[7]), int(line[8]), int(line[9]))
-
-    while startDate <= endDate:
-        for currentTime in {'06', '18'}:
-            createControl(currentTime, startDate)
-            
-            os.system(HYSPLIT_BIN)
-
-            # Remove CONTROL.
-            #os.remove('CONTROL')
-            raw_input()
-        startDate += timedelta(days=1)
-    os.chdir('../../')
+    # Load values
+    working_dir = line[0]
+    lat = line[1]
+    lon = line[2]
+    height = line[3]
+    start_date = date(int(line[4]), int(line[5]), int(line[6]))
+    end_date = date(int(line[7]), int(line[8]), int(line[9]))
+    runtime = int(line[10])
+    runtime_weeks = math.ceil(runtime/(24.0*7))
+    hours = line[11].split()
+    top_model = line[12]
     
+    # Make dir for current run
+    if not os.path.exists(working_dir):
+        os.mkdir(working_dir)
 
-print "Script time execution was:\n%d seconds or %d minutes" % (time.time() - startTime, (time.time() - startTime)/60)
+    os.chdir(working_dir)
+
+    print(working_dir)
+
+    # Create log file
+    log = open('run.log', 'w')
+
+    # ASCDATA.CFG
+    createASCDATA()
+
+    # SETUP.CFG
+    createSETUP()
+
+    while start_date <= end_date:
+        for hour in hours:
+
+            # Create control file, based on hysplit manual
+            control = open('CONTROL', 'w')
+            control.write(start_date.strftime('%y %m %d ') + hour + '\n')
+            control.write('1\n')
+            control.write(lat + ' ' + lon + ' ' + height + '\n')
+            control.write(str(runtime) + '\n')
+            control.write('0\n') # vertical motion
+            control.write(top_model + '\n')
+            control.write(str(runtime_weeks) + '\n')
+
+            # Add sufficient number of meteo files
+            if runtime_weeks > 0:
+                meteo_date_end = start_date + timedelta(weeks=runtime_weeks)
+                meteo_date_start = start_date
+            else:
+                meteo_date_start = start_date - timedelta(weeks=abs(runtime_weeks))
+                meteo_date_end = start_date
+
+            # Set of all meteo files is created
+            meteo_files = Set()
+
+            while meteo_date_start <= meteo_date_end:
+                meteo_files.add('gdas1.' + meteo_date_start.strftime('%b%y').lower() \
+                    + '.w' + str(week_of_month(meteo_date_start)))
+                meteo_date_start = meteo_date_start + timedelta(days=1)
+
+            for meteo_file in meteo_files:
+                control.write(meteo_dir + '\n')
+                control.write(meteo_file + '\n')
+
+            # Output location
+            control.write(os.getcwd() + '\\\n')
+            control.write(start_date.strftime('%y%m%d') + hour)
+            control.close()
+
+            # Run model and log it's output
+            run = Popen(hysplit_bin, stdout=PIPE, stderr=PIPE)
+            run_out = run.communicate()
+            log.write(run_out[0])
+            log.write(run_out[1])
+
+        start_date += timedelta(days=1)
+    os.chdir('../')
+    log.close()
+
+print "Script time execution was:\n%d seconds or %d minutes" % (time.time() \
+    - startTime, (time.time() - startTime)/60)
 raw_input()
