@@ -51,7 +51,7 @@ ASCDATA = """-90.0   -180.0  lat/lon of lower left corner
 SETUP = """&SETUP\ntratio = 0.75,\nmgmin = 15,\nkhmax = 9999,\nkmixd = 0,
 kmsl = 0,\nnstr = 0,\nmhrs = 9999,\nnver = 0,\ntout = 60,\ntm_tpot = 0,
 tm_tamb = 0,\ntm_rain = 1,\ntm_mixd = 1,\ntm_relh = 0,\ntm_sphu = 0,
-ntm_mixr = 0,\ntm_dswf = 0,\ntm_terr = 0,\ndxf = 1.0,\ndyf = 1.0,
+tm_mixr = 0,\ntm_dswf = 0,\ntm_terr = 0,\ndxf = 1.0,\ndyf = 1.0,
 dzf = 0.01,\n/
 """
 
@@ -59,17 +59,8 @@ dzf = 0.01,\n/
 """Additional functions"""
 
 # Calculate the week number of month
-# Taken from http://stackoverflow.com/a/7029955
-def week_of_month(tgtdate):
-
-    days_this_month = calendar.mdays[tgtdate.month]
-    for i in range(1, days_this_month):
-        d = date(tgtdate.year, tgtdate.month, i)
-        if d.day - d.weekday() > 0:
-            startdate = d
-            break
-    # now we can use the modulo 7 approach
-    return (tgtdate - startdate).days //7 + 1
+def week_of_month(current_date):
+    return (current_date.day-1) / 7 + 1
 
 # Create ASCDATA.CFG
 def createASCDATA():
@@ -110,7 +101,7 @@ for line in csv_input:
     print(working_dir)
 
     # Create log file
-    log = open('run.log', 'w')
+    log = open('RUN.LOG', 'w')
 
     # ASCDATA.CFG
     createASCDATA()
@@ -129,7 +120,6 @@ for line in csv_input:
             control.write(str(runtime) + '\n')
             control.write('0\n') # vertical motion
             control.write(top_model + '\n')
-            control.write(str(runtime_weeks) + '\n')
 
             # Add sufficient number of meteo files
             if runtime_weeks > 0:
@@ -143,9 +133,12 @@ for line in csv_input:
             meteo_files = Set()
 
             while meteo_date_start <= meteo_date_end:
+
                 meteo_files.add('gdas1.' + meteo_date_start.strftime('%b%y').lower() \
                     + '.w' + str(week_of_month(meteo_date_start)))
                 meteo_date_start = meteo_date_start + timedelta(days=1)
+
+            control.write(str(len(meteo_files)) + '\n')
 
             for meteo_file in meteo_files:
                 control.write(meteo_dir + '\n')
