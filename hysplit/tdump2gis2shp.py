@@ -12,6 +12,10 @@ import glob
 import pdb
 
 for run in os.walk('.').next()[1]:
+
+    # Print info about current run
+    print run
+
     os.chdir(run)
 
     if not os.path.exists("shapes"):
@@ -49,3 +53,5 @@ for run in os.walk('.').next()[1]:
             os.chdir("..")
 
     os.chdir("..")
+
+raw_input()
