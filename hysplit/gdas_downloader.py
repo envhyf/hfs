@@ -86,3 +86,5 @@ for i in months_all:
             print "File \"%s\" does not exists." % filename
 
         output_file.close()
+
+raw_input()

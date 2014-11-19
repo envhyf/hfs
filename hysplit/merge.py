@@ -8,6 +8,7 @@
 import glob
 import os
 import sys
+import pdb
 sys.path.append('./lib')
 import shapefile
 
@@ -16,7 +17,7 @@ working_dir = 'F:\\out\\'
 os.chdir(working_dir)
 
 for run in os.walk('.').next()[1]:
-    os.chdir("shapes")
+    os.chdir(run + "\\shapes")
 
     merged_shapes = shapefile.Writer()
     shape_files = glob.glob("*.shp")
@@ -25,7 +26,7 @@ for run in os.walk('.').next()[1]:
     print run
 
     for shape_file in shape_files:
-        reader = shapefile.Reader(shapeFile)
+        reader = shapefile.Reader(shape_file)
         merged_shapes._shapes.extend(reader.shapes())
         merged_shapes.records.extend(reader.records())
 
@@ -34,4 +35,4 @@ for run in os.walk('.').next()[1]:
 
     os.chdir("../../")
 
-    raw_input()
+raw_input()

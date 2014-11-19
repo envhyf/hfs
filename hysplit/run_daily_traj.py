@@ -8,7 +8,7 @@
 # the run and especially paths to to meteo GDAS files.
 #
 # Runs are defined in the file "runs.csv" in a comma-separated values format.
-# Values are in the folowing order:
+# Values are in the following order:
 # OUTPUT FOLDER, LATITUDE, LONGTITUDE, HEIGHT, YEAR, MONTH, DAY, BACKWARD TIME IN HOURS
 #
 # Dusan Lago <dusan.lago at gmail.com>
@@ -76,8 +76,12 @@ def createSETUP():
 
 
 """Main"""
-# Main loop. Cycling throught the lines in csv file and for each
+# Main loop. Cycling through the lines in csv file and for each
 # day within period runs model in specified hours.
+
+# Omit the first line in csv
+csv_input.next()
+
 for line in csv_input:
 
     # Load values
