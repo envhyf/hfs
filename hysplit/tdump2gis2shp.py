@@ -11,11 +11,14 @@ import subprocess
 import glob
 import pdb
 
+# Location containing directories with tdump files
+working_dir = 'F:\\out\\'
+os.chdir(working_dir)
+
 for run in os.walk('.').next()[1]:
 
     # Print info about current run
     print run
-
     os.chdir(run)
 
     if not os.path.exists("shapes"):

@@ -11,8 +11,11 @@ import sys
 sys.path.append('./lib')
 import shapefile
 
+# Location containing directories with tdump files
+working_dir = 'F:\\out\\'
+os.chdir(working_dir)
+
 for run in os.walk('.').next()[1]:
-    os.chdir(run)
     os.chdir("shapes")
 
     merged_shapes = shapefile.Writer()

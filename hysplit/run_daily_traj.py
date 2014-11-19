@@ -30,8 +30,8 @@ import math
 """Constants"""
 
 hysplit_bin = 'C:\\hysplit4\\exec\\hyts_std.exe'
-meteo_dir = 'E:\\meteo\\'
-output_dir = 'E:\\meteo\\'
+meteo_dir = 'F:\\meteo\\'
+output_dir = 'F:\\out\\'
 csv_source = 'sample_run.csv'
 # Execution start time stamp
 startTime = time.time()
@@ -93,10 +93,10 @@ for line in csv_input:
     top_model = line[12]
     
     # Make dir for current run
-    if not os.path.exists(working_dir):
-        os.mkdir(working_dir)
+    if not os.path.exists(output_dir + working_dir):
+        os.makedirs(output_dir + working_dir)
 
-    os.chdir(working_dir)
+    os.chdir(output_dir + working_dir)
 
     print(working_dir)
 
@@ -145,7 +145,7 @@ for line in csv_input:
                 control.write(meteo_file + '\n')
 
             # Output location
-            control.write(os.getcwd() + '\\\n')
+            control.write(output_dir + working_dir + '\\\n')
             control.write(start_date.strftime('%y%m%d') + hour)
             control.close()
 

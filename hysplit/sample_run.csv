@@ -1,3 +1,2 @@
-run name,lat,lon,height,start year,start month,start day,end year,end month,end day,run time,release hours,top of the model
-El_Monte,-33.673889,-71.006667,100,2013,6,6,2013,6,17,-1700,06 08 12 16,1000
-San_Ramon,-33.532711,-70.638492,100,2008,5,13,2008,8,13,1000,12,100
+El_Monte,-33.673889,-71.006667,100,2013,6,6,2013,6,17,240,06 08 12 16,1000
+San_Ramon,-33.532711,-70.638492,100,2013,7,1,2013,7,17,1000,12,100
