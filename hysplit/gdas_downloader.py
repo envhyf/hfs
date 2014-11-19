@@ -72,6 +72,7 @@ print "\nStarting to download data."
 ftp = FTP(ftp_address)
 ftp.login ()
 ftp.cwd(working_dir)
+os.chdir(outdir)
 
 for i in months_all:
     for j in range(1, 6):
