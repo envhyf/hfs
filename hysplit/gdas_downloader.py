@@ -76,7 +76,7 @@ os.chdir(outdir)
 
 for i in months_all:
     for j in range(1, 6):
-        filename = outdir + "gdas1." + i + ".w" + str(j)
+        filename = "gdas1." + i + ".w" + str(j)
         print "\t * " + filename
         output_file = open(filename, 'wb')
 
