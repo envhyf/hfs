@@ -39,8 +39,8 @@ User is required to set the desired period and directory used to store downloade
 """
 
 print(description)
-d1 = tuple(map(int, raw_input("Starting date (MM YEAR) : ").split(' ')))
-d2 = tuple(map(int, raw_input("End date (MM YEAR) : ").split(' ')))
+d1 = tuple(map(int, raw_input("Starting date month and year (e.g. 12 2012) : ").split(' ')))
+d2 = tuple(map(int, raw_input("End date month and year (e.g. 12 2012) : ").split(' ')))
 outdir = raw_input("Output directory (e.g. C:\\meteo_dir\\) : ")
 
 # Create output dir if not exists

@@ -30,9 +30,11 @@ import math
 """Constants"""
 
 hysplit_bin = 'C:\\hysplit4\\exec\\hyts_std.exe'
-meteo_dir = 'F:\\meteo\\'
-output_dir = 'F:\\out\\'
-csv_source = 'sample_run.csv'
+print "Enter:"
+meteo_dir = raw_input("Meteo directory (e.g. C:\\meteo): ")
+output_dir = raw_input("Output directory (e.g. C:\\out): ")
+csv_source = raw_input("Location of the csv file containing run specifications (e.g. C:\\runs.csv): ")
+
 # Execution start time stamp
 startTime = time.time()
 # Load runs from csv file
@@ -94,13 +96,13 @@ for line in csv_input:
     runtime = int(line[10])
     runtime_weeks = math.ceil(runtime/(24.0*7))
     hours = line[11].split()
-    top_model = line[12]
+    top_model = "15000" # Constant, should be at least 1000
     
     # Make dir for current run
-    if not os.path.exists(output_dir + working_dir):
-        os.makedirs(output_dir + working_dir)
+    if not os.path.exists(output_dir + "\\" + working_dir):
+        os.makedirs(output_dir + "\\" + working_dir)
 
-    os.chdir(output_dir + working_dir)
+    os.chdir(output_dir + "\\" + working_dir)
 
     print(working_dir)
 
@@ -143,13 +145,17 @@ for line in csv_input:
                 meteo_date_start = meteo_date_start + timedelta(days=1)
 
             control.write(str(len(meteo_files)) + '\n')
-
+		
             for meteo_file in meteo_files:
-                control.write(meteo_dir + '\n')
+                if not os.path.isfile(meteo_dir + "\\" + meteo_file):
+                   print "Missing " + meteo_dir + "\\" + meteo_file
+                   raw_input()
+                   break
+                control.write(meteo_dir + '\\\n')
                 control.write(meteo_file + '\n')
 
             # Output location
-            control.write(output_dir + working_dir + '\\\n')
+            control.write(output_dir + "\\" + working_dir + '\\\n')
             control.write(start_date.strftime('%y%m%d') + hour)
             control.close()
 
