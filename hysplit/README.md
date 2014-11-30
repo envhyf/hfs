@@ -15,7 +15,7 @@ Current versions of HYSPLIT runs only on windows-like machines.
 * for model execution latest version of HYSPLIT
 * spatial analysis are requires >= ArcMap v.10
 
-## Process flow
+### Process flow
 ![Flow of batch processing](http://i.imgur.com/CxtdTj7.png)
 
 ***
