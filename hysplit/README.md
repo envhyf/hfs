@@ -2,7 +2,8 @@
 
 HYSPLIT GUI does not feature batch model execution for defined runs. Following scripts allow to do so by simply define multiple runs as a comma-separated values (CSV) in this format:
 
-| run name | lat | lon | height | start year | start month | start day | end year | end month | end day | run time | release hours | 
+| run name | lat | lon | height | start year | start month | start day | end year | end month | end day | run time | release hours |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 
 Sample file with header, which is necessary to have as a first line of the CSV file, is provided. File can be prepared and further updated by major spreadsheet editors like MS Excel or OpenOffice/LibreOffice Calc. 
 
