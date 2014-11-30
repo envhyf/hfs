@@ -5,7 +5,7 @@ HYSPLIT GUI does not feature batch model execution for defined runs. Following s
 | run name | lat | lon | height | start year | start month | start day | end year | end month | end day | run time | release hours |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 
-Sample [file]:https://raw.githubusercontent.com/dudko/hfs/master/hysplit/sample_run.csv with header, which is necessary to have as a first line of the CSV file, is provided. File can be prepared and further updated by major spreadsheet editors like MS Excel or OpenOffice/LibreOffice Calc. 
+Sample [file](https://github.com/dudko/hfs/blob/master/hysplit/sample_run.csv) with header, which is necessary to have as a first line of the CSV file, is provided. File can be prepared and further updated by major spreadsheet editors like MS Excel or OpenOffice/LibreOffice Calc. 
 
 Current versions of HYSPLIT runs only on windows-like machines.
 
