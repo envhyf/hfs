@@ -1,5 +1,7 @@
 ## Batch processing for HYSPLIT
 
+![](http://i.imgur.com/CxtdTj7.png "Flow of batch processing")
+
 HYSPLIT GUI does not feature batch model execution for defined runs. Following scripts allow to do so by simply define multiple runs as a comma-separated values (CSV) in this format:
 
 | run name | lat | lon | height | start year | start month | start day | end year | end month | end day | run time | release hours |
@@ -14,9 +16,6 @@ Current versions of HYSPLIT runs only on windows-like machines.
 * >= Python 2.7
 * for model execution latest version of HYSPLIT
 * spatial analysis are requires >= ArcMap v.10
-
-### Process flow
-![Flow of batch processing](http://i.imgur.com/CxtdTj7.png)
 
 ***
 
