@@ -17,23 +17,17 @@ Current versions of HYSPLIT runs only on windows-like machines.
 * for model execution latest version of HYSPLIT
 * spatial analysis are requires >= ArcMap v.10
 
-***
-
-## TODO
-## Downloading meteorological data - gdas_downloader.py 
+### Additional informations to individual scripts
+#### Downloading meteorological data - gdas_downloader.py 
 
 * download gdas1 files in batch based on entered time period
 * gdas1 files are downloaded from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1. They are stored in 7-day archives with size about 600 MB.  
 * Hysplit allows run with maximum 12 meteorological files. That gives us rough maximum execution period of 84 days. This limit can be extended by concatenating meteo. Concatenation and it's performance was not tested and it's not implemeted in further scripts.
 * Example of concatenation process using cat.
 
-> cat metfile1 &gt; metfile.all;
+> cat metfile1 &gt; metfile.all; cat metfile2 &gt;&gt; metfile.all; cat metfile3 &gt;&gt; metfile.all;
 
-> cat metfile2 &gt;&gt; metfile.all;
-
-> cat metfile3 &gt;&gt; metfile.all;
-
-## Hysplit execution - run\_daily\_traj.py
+#### Hysplit execution - run\_daily\_traj.py
 
 * model execution is done with "hysplit4\exec\hyts_std.exe"
 * output of the execution is a tdump file
