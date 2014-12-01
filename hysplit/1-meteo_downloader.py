@@ -32,16 +32,16 @@ def cls():
 cls()
 
 # User input and displayed script description
-description = """gdas_downloader.py
+description = """\ngdas_downloader.py
 
-This scripts downloads gdas1 data from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1/. \
+This scripts downloads gdas1 data from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1/.\n\
 User is required to set the desired period and directory used to store downloaded files.
 """
 
 print(description)
 d1 = tuple(map(int, raw_input("Starting date month and year (e.g. 12 2012) : ").split(' ')))
 d2 = tuple(map(int, raw_input("End date month and year (e.g. 12 2012) : ").split(' ')))
-outdir = raw_input("Output directory (e.g. C:\\meteo_dir\\) : ")
+outdir = raw_input("Output directory, (e.g. C:\\meteo_dir\\; ending slash is optional) : ")
 
 # Create output dir if not exists
 if not os.path.exists(outdir):
@@ -59,7 +59,7 @@ current_month = start_date.month - 1
 months_all = []
 
 for i in range(months_delta):
-    months_all.append(str(months[current_month]) + str(current_year).zfill(2))
+    months_all.append(str(months[current_month]) + str(current_year)[2:4])
     if current_month == 11:
         current_month = 0
         current_year += 1
@@ -87,4 +87,5 @@ for i in months_all:
 
         output_file.close()
 
+print("\nDONE. Please, press Enter to terminate the script.")
 raw_input()
