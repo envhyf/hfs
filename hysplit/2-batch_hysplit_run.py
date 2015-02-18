@@ -18,6 +18,7 @@
 """Modules"""
 import csv
 import os
+import sys
 import subprocess
 from subprocess import Popen, PIPE
 from datetime import date, timedelta
@@ -28,8 +29,28 @@ import math
 
 
 """Constants"""
+# Cross-platform clear screen
+def cls():
+    os.system(['clear','cls'][os.name == 'nt'])
 
+cls()
+
+# User input and displayed script description
+description = """\nbatch_hysplit_run.py
+
+Batch hysplit execution. Runs are defined in csv file.
+"""
+
+print(description)
+
+# Test if hysplit binary exists
 hysplit_bin = 'C:\\hysplit4\\exec\\hyts_std.exe'
+
+if not os.path.isfile(hysplit_bin): 
+    print("Couldn't find hyts_std.exe. Please, check the hysplit installation or set\
+      properly the script variable 'hysplit_bin'.")
+    sys.exit()
+
 print "Enter:"
 meteo_dir = raw_input("Meteo directory (e.g. C:\\meteo): ")
 output_dir = raw_input("Output directory (e.g. C:\\out): ")
@@ -84,6 +105,8 @@ def createSETUP():
 # Omit the first line in csv
 csv_input.next()
 
+print "\n * starting batch run \n"
+
 for line in csv_input:
 
     # Load values
@@ -104,7 +127,7 @@ for line in csv_input:
 
     os.chdir(output_dir + "\\" + working_dir)
 
-    print(working_dir)
+    print(" * running " + working_dir)
 
     # Create log file
     log = open('RUN.LOG', 'w')
@@ -169,6 +192,7 @@ for line in csv_input:
     os.chdir('../')
     log.close()
 
-print "Script time execution was:\n%d seconds or %d minutes" % (time.time() \
+print "DONE. Script time execution was:\n%d seconds or %d minutes" % (time.time() \
     - startTime, (time.time() - startTime)/60)
+print "Please, press Enter to terminate the script."
 raw_input()

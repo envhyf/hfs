@@ -32,7 +32,7 @@ def cls():
 cls()
 
 # User input and displayed script description
-description = """\ngdas_downloader.py
+description = """\n1-meteo_downloader.py
 
 This scripts downloads gdas1 data from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1/.\n\
 User is required to set the desired period and directory used to store downloaded files.
@@ -67,7 +67,7 @@ for i in range(months_delta):
         current_month += 1
 
 # Download data
-print "\nStarting to download data."
+print "\n * starting to download data \n"
 
 ftp = FTP(ftp_address)
 ftp.login ()
@@ -77,7 +77,7 @@ os.chdir(outdir)
 for i in months_all:
     for j in range(1, 6):
         filename = "gdas1." + i + ".w" + str(j)
-        print "\t * " + filename
+        print "\t * downloading " + filename
         output_file = open(filename, 'wb')
 
         try:
