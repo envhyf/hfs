@@ -127,7 +127,7 @@ for line in csv_input:
 
     os.chdir(output_dir + "\\" + working_dir)
 
-    print(" * running " + working_dir)
+    print("\t * running " + working_dir)
 
     # Create log file
     log = open('RUN.LOG', 'w')
@@ -192,7 +192,7 @@ for line in csv_input:
     os.chdir('../')
     log.close()
 
-print "DONE. Script time execution was:\n%d seconds or %d minutes" % (time.time() \
+print "\n * DONE. Script time execution was:\n%d seconds or %d minutes" % (time.time() \
     - startTime, (time.time() - startTime)/60)
 print "Please, press Enter to terminate the script."
 raw_input()

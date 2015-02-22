@@ -34,7 +34,7 @@ cls()
 # User input and displayed script description
 description = """\n1-meteo_downloader.py
 
-This scripts downloads gdas1 data from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1/.\n\
+This scripts downloads gdas1 data from ftp://arlftp.arlhq.noaa.gov/pub/archives/gdas1/. \
 User is required to set the desired period and directory used to store downloaded files.
 """
 
@@ -87,5 +87,5 @@ for i in months_all:
 
         output_file.close()
 
-print("\nDONE. Please, press Enter to terminate the script.")
+print("\n * DONE. Please, press Enter to terminate the script.")
 raw_input()
