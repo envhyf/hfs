@@ -44,8 +44,8 @@ Convert all the tdump files inside of run directories produces with [2-run_daily
 
 <p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/3-tdump2shp.png"  alt="tdump to shp conversion"/> </p>
 
-#### 4-merge_shp.py - merge all converted shapefiles
+#### 4-merge\_shp.py - merge all converted shapefiles
 
 <p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/4-merge_shp.png"  alt="Merge all converted shapefiles"/> </p>
 
-#### 5-1-spatial_grid_layer.py
+#### 5-1-spatial\_grid\_layer.py

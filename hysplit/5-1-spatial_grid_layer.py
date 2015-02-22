@@ -3,7 +3,9 @@ import glob
 import os
 import pdb
 
-workingDir = "F:/out/out"
+workingDir = "F:/directory/with/merged/layers"
+grid = "F:/grid.shp"
+
 arcpy.env.workspace = workingDir
 os.chdir(workingDir)
 
@@ -20,5 +22,5 @@ for station in stations:
 print "Spatial."
 for station in stations:
     print "Started %s." % station
-    arcpy.SpatialJoin_analysis("%s/grid.shp" % workingDir, "%s/%s" % (workingDir, station), "%s/merged_%s" % (workingDir, station),"JOIN_ONE_TO_ONE","KEEP_ALL","""Id "Id" true true false 6 Long 0 6 ,First,#,grid,Id,-1,-1;id_1 "id_1" true true false 11 Double 0 11 ,First,#,merge1,id,-1,-1""","INTERSECT","#","#")
+    arcpy.SpatialJoin_analysis("%s" % grid, "%s/%s" % (workingDir, station), "%s/merged_%s" % (workingDir, station),"JOIN_ONE_TO_ONE","KEEP_ALL","""Id "Id" true true false 6 Long 0 6 ,First,#,grid,Id,-1,-1;id_1 "id_1" true true false 11 Double 0 11 ,First,#,merge1,id,-1,-1""","INTERSECT","#","#")
     print "Done."
