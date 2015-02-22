@@ -51,3 +51,7 @@ Convert all the tdump files inside of run directories produces with [2-run_daily
 #### 5-1-spatial\_grid\_layer.py
 
 After creating grid adjust file locations in script. Scipt is executed within ArcMap IDE by simply loading and running it. This is necessery because of [arcpy](http://resources.arcgis.com/en/help/main/10.1/index.html#//000v000000v7000000) memory limitation.
+
+#### 5-2-count\_hits.py
+Count how many trajectories per station entered the area around points of
+# interest.
