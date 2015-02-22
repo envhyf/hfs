@@ -26,8 +26,6 @@ Sample [file](https://github.com/dudko/hfs/blob/master/hysplit/sample_run.csv) c
 
 The direction of the run goes forward with positive value for runtime hours and backwards with negative one
 
-<p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/0-spread_runs.png"  alt="Defining runs in CSV file"/> </p>
-
 #### 1 gdas\_downloader.py - download meteorological data
 
 Execute the script either by double clicking or from Python command-line prompt.
@@ -42,7 +40,7 @@ First, make sure, that the location of the HYSPLIT binary, used for model execut
 
 #### 3 tdump2shp.py - tdump to shp conversion
 
-Convert all the tdump files inside of run directiries produces with [2-run_daily_traj.py](https://github.com/dudko/hfs/blob/master/hysplit/2-run_daily_traj.py).
+Convert all the tdump files inside of run directories produces with [2-run_daily_traj.py](https://github.com/dudko/hfs/blob/master/hysplit/2-run_daily_traj.py).
 
 <p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/3-tdump2shp.png"  alt="tdump to shp conversion"/> </p>
 
