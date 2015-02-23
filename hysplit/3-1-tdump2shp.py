@@ -11,12 +11,13 @@ import subprocess
 import glob
 import pdb
 
-description = """\n3-tdump2shp.py
+description = """\n3-1-tdump2shp.py
 
 This script converts the tdump outputs from hysplit batch run. It walks throught
 all directories and stores the shape files inside of newly created shape folder.
 
-User is required to enter the location of directory containing tdump outputs.
+User is required to enter the location of directory containing direcotries with
+tdump outputs from batch run.
 """
 
 print(description)

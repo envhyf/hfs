@@ -38,11 +38,17 @@ First, make sure, that the location of the HYSPLIT binary, used for model execut
 
 <p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/2-batch_hysplit_run.png"  alt="Batch execution"/> </p>
 
-#### 3 tdump2shp.py - tdump to shp conversion
+#### 3-1 tdump2shp.py - tdump to shp conversion
 
 Convert all the tdump files inside of run directories produces with [2-run_daily_traj.py](https://github.com/dudko/hfs/blob/master/hysplit/2-run_daily_traj.py).
 
-<p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/3-tdump2shp.png"  alt="tdump to shp conversion"/> </p>
+<p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/3-1-tdump2shp.png"  alt="tdump to shp conversion"/> </p>
+
+#### 3-2 tdump2kml.py - tdump to kml conversion
+
+Convert all the tdump files inside of run directories produces with [2-run_daily_traj.py](https://github.com/dudko/hfs/blob/master/hysplit/2-run_daily_traj.py).
+
+<p align="center"> <img src="https://raw.githubusercontent.com/dudko/hfs/master/hysplit/img/3-2-tdump2kml.png"  alt="tdump to kml conversion"/> </p>
 
 #### 4-merge\_shp.py - merge all converted shapefiles
 
@@ -53,5 +59,5 @@ Convert all the tdump files inside of run directories produces with [2-run_daily
 After creating grid adjust file locations in script. Scipt is executed within ArcMap IDE by simply loading and running it. This is necessery because of [arcpy](http://resources.arcgis.com/en/help/main/10.1/index.html#//000v000000v7000000) memory limitation.
 
 #### 5-2-count\_hits.py
-Count how many trajectories per station entered the area around points of
-# interest.
+
+Count how many trajectories per station entered the area around points of interest. Stations need to be specified in CVS file in a format (station, lat, lon). CSV file used for batch run definition can be used as well. Points are define in script as a tripple (point name, lat, lon). Radius is defined as r.

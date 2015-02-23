@@ -36,7 +36,7 @@ def cls():
 cls()
 
 # User input and displayed script description
-description = """\nbatch_hysplit_run.py
+description = """\n2-batch_hysplit_run.py
 
 Batch hysplit execution. Runs are defined in csv file.
 """
