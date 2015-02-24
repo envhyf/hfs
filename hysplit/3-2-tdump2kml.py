@@ -4,6 +4,8 @@
 import os
 import subprocess
 import glob
+import sys
+import pdb
 
 description = """\n3-2-tdump2kml.py
 
@@ -25,38 +27,45 @@ if not os.path.exists(working_dir):
 
 print "\n * starting to convert\n"
 
+os.chdir(working_dir)
+
 # Main loop
-for run in os.walk(working_dir).next()[1]:
+for run in os.walk('.').next()[1]:
 
     os.chdir(run)
 
     print "\t * converting %s" % run
 
     # Filter tdump files
-    files = glob.glob("./0*")
-    files.extend(glob.glob("./1*"))
+    files = glob.glob("0*")
+    files.extend(glob.glob("1*"))
 
     # Conversion
     for entry in files:
-    	subprocess.Popen("C:\\hysplit4\\exec\\trajplot.exe -i%s -o%s -a3 -v1 -l1" % \
-                (entry, entry), shell=True, stdout=subprocess.PIPE)
+        p = subprocess.Popen("C:\\hysplit4\\exec\\trajplot.exe -i%s -o%s.ps -a3 -v1 -l1" % \
+            (entry, entry), shell=True, stdout=subprocess.PIPE)
+        p.wait()
+        
+        #p_out = p.communicate()
+        #print p_out[0], p_out[1]
 
     # Move all kmls into dir kmls
-    kmls = glob.glob("./*.kml")
+    #sys.stdout.flush()
+    kmls = glob.glob("*.kml")
 
     if not os.path.exists("kmls"):
         os.makedirs("kmls")
     
     for kml in kmls:
-        os.rename(kml, "./kmls/%s" % kml)
+        os.rename(kml, "kmls\\%s" % kml)
     
     # Remove redundant ps files
-    pss = glob.glob("./*.ps")
+    pss = glob.glob("*.ps")
     
     for ps in pss:
         os.remove(ps)
 
-    os.chdir("../")
+    os.chdir('../')    
 
 print("\n * DONE. Please, press Enter to terminate the script.")
 raw_input()
