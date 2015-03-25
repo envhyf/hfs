@@ -9,4 +9,4 @@ Following scripts allow batch processing for [HYSPLIT](http://ready.arl.noaa.gov
 
 Repository mainly contains dedicated scripts for both models. Couple of scripts written for post-processing phase are also included. Used scripting language is Python, tested with the version 2.7.6.
 
-Any following manuals and guidelines assumes that, the a Python environment is correctly set up.
+Any following manuals and guidelines assumes that the Python environment is correctly set up.
